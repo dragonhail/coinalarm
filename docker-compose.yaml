@@ -45,6 +45,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 1
+      KAFKA_CREATE_TOPICS: "sms:1:1,auth:1:1,test:1:1,monitoring:1:1"
     networks:
       - default
     ports:
