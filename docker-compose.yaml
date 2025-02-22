@@ -1,0 +1,91 @@
+# Use root/example as user/password credentials
+version: '3.8'
+name: coinalarm
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
+    restart: always
+    environment:
+      - MARIADB_ROOT_PASSWORD=0000
+      - MARIADB_DATABASE=test
+      - MARIADB_USER=dh
+      - MARIADB_PASSWORD=0000
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - default
+    ports:
+      - "3306:3306"
+
+  redis:
+    container_name: redis
+    image: redis
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    networks:
+      - default
+    ports:
+      - "6379:6379"
+
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://kafka:9092,CONTROLLER://kafka:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_NUM_PARTITIONS: 1
+    networks:
+      - default
+    ports:
+      - "9092:9092"
+
+  coinalarm-was:
+    container_name: coinalarm-was
+    image: dragonhailstone/coinalarm-was:1.0.0
+    restart: always
+    networks:
+      - default
+    ports:
+      - "8080:8080"
+
+  coinalarm-alarmserver:
+    container_name: coinalarm-alarmserver
+    image: dragonhailstone/coinalarm-alarmserver:1.0.0
+    restart: always
+    networks:
+      - default
+    ports:
+      - "8090:8090"
+
+  coinalarm-auth-workerserver:
+    container_name: coinalarm-auth-workerserver
+    image: dragonhailstone/coinalarm-auth-workerserver:1.0.0
+    restart: always
+    networks:
+      - default
+    ports:
+      - "8091:8091"
+
+  coinalarm-price-workerserver:
+    container_name: coinalarm-price-workerserver
+    image: dragonhailstone/coinalarm-price-workerserver:1.0.0
+    restart: always
+    networks:
+      - default
+    ports:
+      - "8092:8092"
+
+networks:
+  default:
+    driver: bridge
