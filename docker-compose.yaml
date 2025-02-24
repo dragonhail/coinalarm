@@ -51,6 +51,8 @@ services:
     restart: always
     networks:
       - default
+    ports:
+      - "8080:8080"
 
   coinalarm-alarmserver:
     container_name: coinalarm-alarmserver
