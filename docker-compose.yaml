@@ -16,8 +16,6 @@ services:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - default
-    ports:
-      - "3306:3306"
 
   redis:
     container_name: redis
@@ -26,8 +24,6 @@ services:
       - ALLOW_EMPTY_PASSWORD=yes
     networks:
       - default
-    ports:
-      - "6379:6379"
 
   kafka:
     image: apache/kafka:latest
@@ -48,8 +44,6 @@ services:
       KAFKA_CREATE_TOPICS: "sms:1:1,auth:1:1,test:1:1,monitoring:1:1"
     networks:
       - default
-    ports:
-      - "9092:9092"
 
   coinalarm-was:
     container_name: coinalarm-was
@@ -57,8 +51,6 @@ services:
     restart: always
     networks:
       - default
-    ports:
-      - "8080:8080"
 
   coinalarm-alarmserver:
     container_name: coinalarm-alarmserver
@@ -66,26 +58,32 @@ services:
     restart: always
     networks:
       - default
-    ports:
-      - "8090:8090"
 
-  coinalarm-auth-workerserver:
-    container_name: coinalarm-auth-workerserver
-    image: dragonhailstone/coinalarm-auth-workerserver:1.0.0
+  coinalarm-pricewatcher:
+    container_name: coinalarm-pricewatcher
+    image: 
     restart: always
     networks:
       - default
-    ports:
-      - "8091:8091"
 
-  coinalarm-price-workerserver:
-    container_name: coinalarm-price-workerserver
-    image: dragonhailstone/coinalarm-price-workerserver:1.0.0
-    restart: always
-    networks:
-      - default
-    ports:
-      - "8092:8092"
+
+#  coinalarm-auth-workerserver:
+#    container_name: coinalarm-auth-workerserver
+#    image: dragonhailstone/coinalarm-auth-workerserver:1.0.0
+#    restart: always
+#    networks:
+#      - default
+#    ports:
+#      - "8091:8091"
+
+#  coinalarm-price-workerserver:
+#    container_name: coinalarm-price-workerserver
+#    image: dragonhailstone/coinalarm-price-workerserver:1.0.0
+#    restart: always
+#    networks:
+#      - default
+#    ports:
+#      - "8092:8092"
 
 networks:
   default:
