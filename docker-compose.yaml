@@ -63,7 +63,7 @@ services:
 
   coinalarm-pricewatcher:
     container_name: coinalarm-pricewatcher
-    image: 
+    image: yoonseokji/coinalarm-pricewatcher:latest
     restart: always
     networks:
       - default
