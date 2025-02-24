@@ -56,7 +56,7 @@ services:
 
   coinalarm-alarmserver:
     container_name: coinalarm-alarmserver
-    image: dragonhailstone/coinalarm-alarmserver:1.0.0
+    image: dragonhailstone/coinalarm-alarmserver:1.0.1
     restart: always
     networks:
       - default
@@ -67,6 +67,14 @@ services:
     restart: always
     networks:
       - default
+
+  coinalarm-:
+    container_name: coinalarm-
+    image: yoonseokji/coinalarm-
+    restart: always
+    networks:
+      - default
+
 
 
 #  coinalarm-auth-workerserver:
